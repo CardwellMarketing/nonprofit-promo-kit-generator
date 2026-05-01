@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nonprofit Event Promo Kit Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <p class="eyebrow">Communications Toolkit</p>
+        <h1>Nonprofit Event Promo Kit Generator</h1>
+        <p class="subtitle">Craft channel-ready messaging for your next event in seconds.</p>
+      </header>
+
+      <section class="card form-card" aria-labelledby="form-title">
+        <h2 id="form-title">Event Details</h2>
+        <form id="promo-form" class="promo-form">
+          <div class="field-grid">
+            <label>
+              Event title
+              <input type="text" name="eventTitle" required />
+            </label>
+            <label>
+              Date
+              <input type="date" name="eventDate" required />
+            </label>
+            <label>
+              Time
+              <input type="time" name="eventTime" required />
+            </label>
+            <label>
+              Location or Zoom link
+              <input type="text" name="location" required />
+            </label>
+            <label>
+              Target audience
+              <input type="text" name="audience" required />
+            </label>
+            <label>
+              Speaker names
+              <input type="text" name="speakers" required />
+            </label>
+            <label>
+              Main topic
+              <input type="text" name="topic" required />
+            </label>
+            <label>
+              Registration link
+              <input type="url" name="registration" required />
+            </label>
+            <label class="full-width">
+              Event context / extra details (optional)
+              <textarea name="context" rows="4" placeholder="Add mission relevance, audience pain points, outcomes, sponsors, call-to-action emphasis, etc."></textarea>
+            </label>
+            <label>
+              Tone
+              <select name="tone" required>
+                <option value="professional">Professional</option>
+                <option value="warm">Warm</option>
+                <option value="urgent">Urgent</option>
+                <option value="friendly">Friendly</option>
+                <option value="executive">Executive</option>
+                <option value="cardwell-oano">Cardwell / OANO style</option>
+              </select>
+            </label>
+          </div>
+          <div class="actions">
+            <button type="submit" class="generate-btn">Generate Promo Kit</button>
+            <button type="reset" class="reset-btn">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="output" class="output-grid" aria-live="polite"></section>
+    </main>
+
+    <footer class="site-footer">Prototype created by Cardwell Communications.</footer>
+
+    <template id="output-template">
+      <article class="card output-card">
+        <div class="output-head">
+          <h3></h3>
+          <button type="button" class="copy-btn">Copy</button>
+        </div>
+        <div class="content" role="textbox" aria-readonly="true"></div>
+      </article>
+    </template>
+
+    <script src="script.js"></script>
+  </body>
+</html>
