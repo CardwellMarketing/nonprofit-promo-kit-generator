@@ -125,29 +125,34 @@ function buildPromoKit(d) {
   return [
     {
       title: 'Email announcement',
-      text: `Subject: You’re invited: ${d.title}\n\nDear ${d.audience},\n\n${tone.opener}\n\nPlease join us for ${d.title} on ${d.date} at ${d.time} (${d.location}).\n\nThis event will explore ${d.topic} with ${d.speakers}. ${benefitLine}\n\n${donorLine}\n\n${ctaLine}\n\nWith appreciation,\n[Your Nonprofit Name]`
+      text: cleanCopy(`Subject: You’re invited: ${d.title}\n\nDear ${d.audience},\n\n${tone.opener}\n\nPlease join us for ${d.title} on ${d.date} at ${d.time} (${d.location}).\n\nThis event will explore ${d.topic} with ${d.speakers}. ${benefitLine}\n\n${donorLine}\n\n${ctaLine}\n\nWith appreciation,\n[Your Nonprofit Name]`)
     },
     {
       title: 'LinkedIn post',
-      text: `${tone.opener}\n\n${d.title}\n📅 ${d.date}\n⏰ ${d.time}\n📍 ${d.location}\n\nJoin ${d.speakers} for a conversation on ${d.topic} designed for ${d.audience}. ${benefitLine}\n\n${composeCta('Save your spot.', guidance, d.registration)}\n\n#NonprofitLeadership #CommunityImpact #ProfessionalDevelopment`
+      text: cleanCopy(`${tone.opener}\n\n${d.title}\n📅 ${d.date}\n⏰ ${d.time}\n📍 ${d.location}\n\nJoin ${d.speakers} for a conversation on ${d.topic} designed for ${d.audience}. ${benefitLine}\n\n${composeCta('Save your spot.', guidance, d.registration)}\n\n#NonprofitLeadership #CommunityImpact #ProfessionalDevelopment`)
     },
     {
       title: 'Facebook post',
-      text: `You’re invited! 🎉\n\n${d.title} is happening on ${d.date} at ${d.time} at ${d.location}.\n\nWe’ll dive into ${d.topic} with ${d.speakers} and bring together ${d.audience}. ${benefitLine}\n\n${donorLine}\n\n${composeCta('Save your seat today.', guidance, d.registration)}\n\nPlease share with someone who should join us.`
+      text: cleanCopy(`You’re invited! 🎉\n\n${d.title} is happening on ${d.date} at ${d.time} at ${d.location}.\n\nWe’ll dive into ${d.topic} with ${d.speakers} and bring together ${d.audience}. ${benefitLine}\n\n${donorLine}\n\n${composeCta('Save your seat today.', guidance, d.registration)}\n\nPlease share with someone who should join us.`)
     },
     {
       title: 'Website blurb',
-      text: `${d.title} brings together ${d.audience} on ${d.date} at ${d.time} at ${d.location} for a focused discussion on ${d.topic}. Featuring ${d.speakers}, this session offers actionable insights and real-world perspective for mission-driven organizations. ${benefitLine} ${composeCta('Learn more and sign up.', guidance, d.registration)}`
+      text: cleanCopy(`${d.title} brings together ${d.audience} on ${d.date} at ${d.time} at ${d.location} for a focused discussion on ${d.topic}. Featuring ${d.speakers}, this session offers actionable insights and real-world perspective for mission-driven organizations. ${benefitLine} ${composeCta('Learn more and sign up.', guidance, d.registration)}`)
     },
     {
       title: 'Reminder email',
-      text: `Subject: Reminder: ${d.title} is almost here\n\nHello ${d.audience},\n\nA quick reminder that ${d.title} takes place on ${d.date} at ${d.time} (${d.location}).\n\n${d.speakers} will lead the discussion on ${d.topic}, and we’re excited to have you with us.\n\n${composeCta('If you have not registered yet, there is still time.', guidance, d.registration)}\n\nSee you soon,\n[Your Nonprofit Name]`
+      text: cleanCopy(`Subject: Reminder: ${d.title} is almost here\n\nHello ${d.audience},\n\nA quick reminder that ${d.title} takes place on ${d.date} at ${d.time} (${d.location}).\n\n${d.speakers} will lead the discussion on ${d.topic}, and we’re excited to have you with us.\n\n${composeCta('If you have not registered yet, there is still time.', guidance, d.registration)}\n\nSee you soon,\n[Your Nonprofit Name]`)
     },
     {
       title: 'Speaker introduction',
       text: `Welcome, and thank you for joining us for ${d.title}.\n\nToday’s conversation focuses on ${d.topic} and is designed with ${d.audience} in mind.\n\nWe are honored to be joined by ${d.speakers}, who bring valuable insight and practical experience to this discussion.\n\nLet’s begin.`
     }
   ];
+}
+
+
+function cleanCopy(text) {
+  return text.replace(/\n\n\n+/g, '\n\n').trim();
 }
 
 function renderSections(sections) {
@@ -160,7 +165,7 @@ function renderSections(sections) {
     const copyButton = node.querySelector('.copy-btn');
 
     title.textContent = section.title;
-    text.textContent = section.text.replace(/\n\n\n+/g, '\n\n');
+    text.textContent = section.text;
 
     copyButton.addEventListener('click', async () => {
       await navigator.clipboard.writeText(section.text);
