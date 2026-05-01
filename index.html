@@ -59,6 +59,10 @@
               <input type="url" name="registration" required />
             </label>
             <label>
+              Event context / extra details (optional)
+              <textarea name="eventContext" rows="3" placeholder="Add sponsors, goals, theme, urgency, or key context."></textarea>
+            </label>
+            <label>
               Tone
               <select name="tone" required>
                 <option value="professional">Professional</option>
@@ -66,10 +70,14 @@
                 <option value="urgent">Urgent</option>
                 <option value="friendly">Friendly</option>
                 <option value="executive">Executive</option>
+                <option value="cardwell-oano">Cardwell / OANO style</option>
               </select>
             </label>
           </div>
-          <button type="submit" class="generate-btn">Generate Promo Kit</button>
+          <div class="form-actions">
+            <button type="submit" class="generate-btn">Generate Promo Kit</button>
+            <button type="reset" class="reset-btn" id="reset-btn">Reset</button>
+          </div>
         </form>
       </section>
 
@@ -82,9 +90,11 @@
           <h3></h3>
           <button type="button" class="copy-btn">Copy</button>
         </div>
-        <textarea readonly></textarea>
+        <pre class="output-text"></pre>
       </article>
     </template>
+
+    <footer class="site-footer">Prototype created by Cardwell Communications.</footer>
 
     <script src="script.js"></script>
   </body>
