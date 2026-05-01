@@ -59,34 +59,56 @@ function formatTime(rawTime) {
 
 function buildPromoKit(d) {
   const toneLine = toneGuides[d.tone] || toneGuides.professional;
-  const contextLine = d.eventContext ? `\n\nEvent context: ${d.eventContext}` : '';
+  const contextLine = buildContextInfluenceLine(d.eventContext);
 
   return [
     {
       title: 'Email announcement',
-      text: `Subject: Join us for ${d.title}\n\nDear ${d.audience},\n\nYou are invited to ${d.title} on ${d.date} at ${d.time}. This event will take place at ${d.location}.\n\nWe will explore ${d.topic} with insights from ${d.speakers}. The message should feel ${toneLine}.${contextLine}\n\nPlease register here: ${d.registration}\n\nWe hope to see you there,\n[Your Nonprofit Name]`
+      text: `Subject: Join us for ${d.title}\n\nDear ${d.audience},\n\nYou are invited to ${d.title} on ${d.date} at ${d.time}. This event will take place at ${d.location}.\n\nWe will explore ${d.topic} with insights from ${d.speakers}. The message should feel ${toneLine}.${contextLine ? ` ${contextLine}` : ''}\n\nPlease register here: ${d.registration}\n\nWe hope to see you there,\n[Your Nonprofit Name]`
     },
     {
       title: 'LinkedIn post',
-      text: `We're excited to invite ${d.audience} to ${d.title}.\n\n📅 ${d.date}\n⏰ ${d.time}\n📍 ${d.location}\n\nThis session focuses on ${d.topic}, featuring ${d.speakers}.${contextLine}\n\nRegister: ${d.registration}\n\n#NonprofitLeadership #CommunityImpact #ProfessionalDevelopment`
+      text: `We're excited to invite ${d.audience} to ${d.title}.\n\n📅 ${d.date}\n⏰ ${d.time}\n📍 ${d.location}\n\nThis session focuses on ${d.topic}, featuring ${d.speakers}.${contextLine ? ` ${contextLine}` : ''}\n\nRegister: ${d.registration}\n\n#NonprofitLeadership #CommunityImpact #ProfessionalDevelopment`
     },
     {
       title: 'Facebook post',
-      text: `Big news, community! 🎉\n\n${d.title} is happening on ${d.date} at ${d.time}. Join us at ${d.location} for a meaningful conversation on ${d.topic}.\n\nFeaturing: ${d.speakers}${contextLine}\n\nSave your spot now: ${d.registration}\n\nTag someone in your network who should attend!`
+      text: `Big news, community! 🎉\n\n${d.title} is happening on ${d.date} at ${d.time}. Join us at ${d.location} for a meaningful conversation on ${d.topic}.\n\nFeaturing: ${d.speakers}${contextLine ? `\n\n${contextLine}` : ''}\n\nSave your spot now: ${d.registration}\n\nTag someone in your network who should attend!`
     },
     {
       title: 'Website blurb',
-      text: `${d.title} brings together ${d.audience} for a timely discussion on ${d.topic}. Join us on ${d.date} at ${d.time} at ${d.location}. Hear from ${d.speakers} and walk away with practical next steps for mission-driven impact.${contextLine ? ` ${d.eventContext}` : ''} Register today: ${d.registration}`
+      text: `${d.title} brings together ${d.audience} for a timely discussion on ${d.topic}. Join us on ${d.date} at ${d.time} at ${d.location}. Hear from ${d.speakers} and walk away with practical next steps for mission-driven impact.${contextLine ? ` ${contextLine}` : ''} Register today: ${d.registration}`
     },
     {
       title: 'Reminder email',
-      text: `Subject: Reminder: ${d.title} is coming up\n\nHello ${d.audience},\n\nA quick reminder that ${d.title} is happening on ${d.date} at ${d.time}.\n\nLocation/Access: ${d.location}\nFeatured speakers: ${d.speakers}${contextLine}\n\nIf you have not registered yet, you can still join us here: ${d.registration}\n\nLooking forward to connecting with you,\n[Your Nonprofit Name]`
+      text: `Subject: Reminder: ${d.title} is coming up\n\nHello ${d.audience},\n\nA quick reminder that ${d.title} is happening on ${d.date} at ${d.time}.\n\nLocation/Access: ${d.location}\nFeatured speakers: ${d.speakers}${contextLine ? `\n\n${contextLine}` : ''}\n\nIf you have not registered yet, you can still join us here: ${d.registration}\n\nLooking forward to connecting with you,\n[Your Nonprofit Name]`
     },
     {
       title: 'Speaker introduction',
-      text: `Welcome everyone, and thank you for joining ${d.title}.\n\nToday, we are focusing on ${d.topic}. We are honored to be joined by ${d.speakers}, who bring valuable perspective for ${d.audience}.${contextLine}\n\nPlease join me in welcoming our speaker(s).`
+      text: `Welcome everyone, and thank you for joining ${d.title}.\n\nToday, we are focusing on ${d.topic}. We are honored to be joined by ${d.speakers}, who bring valuable perspective for ${d.audience}.${contextLine ? ` ${contextLine}` : ''}\n\nPlease join me in welcoming our speaker(s).`
     }
   ];
+}
+
+
+function buildContextInfluenceLine(rawContext) {
+  if (!rawContext) {
+    return '';
+  }
+
+  const normalized = rawContext
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter((word) => word.length > 3)
+    .filter((word) => !['with', 'from', 'that', 'this', 'your', 'about', 'into', 'have', 'will', 'their', 'they', 'them', 'event', 'details'].includes(word));
+
+  const themes = [...new Set(normalized)].slice(0, 3);
+
+  if (!themes.length) {
+    return 'Emphasize practical relevance and clear community value in the messaging.';
+  }
+
+  return `Highlight themes like ${themes.join(', ')} while keeping the copy benefit-oriented.`;
 }
 
 function renderSections(sections) {
