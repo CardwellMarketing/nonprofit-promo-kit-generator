@@ -183,14 +183,14 @@ function buildContextPhrase(rawContext) {
   }
 
   if (themes.length === 1) {
-    return `Expect a thoughtful look at ${themes[0]}.`;
+    return `We'll also explore ${themes[0]}.`;
   }
 
   if (themes.length === 2) {
-    return `Expect a thoughtful look at ${themes[0]} and ${themes[1]}.`;
+    return `We'll also explore ${themes[0]} and ${themes[1]}.`;
   }
 
-  return `Expect a thoughtful look at ${themes[0]}, ${themes[1]}, and ${themes[2]}.`;
+  return `We'll also explore ${themes[0]}, ${themes[1]}, and ${themes[2]}.`;
 }
 
 function renderSections(sections) {
