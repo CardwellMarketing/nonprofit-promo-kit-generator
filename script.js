@@ -3,13 +3,31 @@ const output = document.getElementById('output');
 const template = document.getElementById('output-template');
 const resetButton = document.getElementById('reset-btn');
 
-const toneGuides = {
-  professional: 'clear, confident, and mission-focused',
-  warm: 'inviting, heartfelt, and community-centered',
-  urgent: 'high-priority, action-driven, and time-sensitive',
-  friendly: 'conversational, upbeat, and approachable',
-  executive: 'strategic, high-level, and leadership-oriented',
-  'cardwell-oano': 'story-forward, equity-centered, and values-driven with clear calls to action'
+const toneVoice = {
+  professional: {
+    opener: "We're proud to invite you to a focused conversation",
+    closer: 'Join us as we move this work forward together.'
+  },
+  warm: {
+    opener: "We'd love to welcome you into a heartfelt gathering",
+    closer: "We can't wait to share this time with you and our community."
+  },
+  urgent: {
+    opener: "We're reaching out with an urgent invitation to take action together",
+    closer: 'Please make plans to join us and help drive timely impact.'
+  },
+  friendly: {
+    opener: "We're excited to welcome you to a conversation with neighbors and peers",
+    closer: "We'd love to have you there."
+  },
+  executive: {
+    opener: "You're invited to a strategic discussion designed for leadership",
+    closer: 'Your perspective will strengthen this shared work.'
+  },
+  'cardwell-oano': {
+    opener: "Join us for a values-driven conversation centered on equity and lived experience",
+    closer: 'Together, we can turn insight into collective action.'
+  }
 };
 
 form.addEventListener('submit', (event) => {
@@ -58,35 +76,121 @@ function formatTime(rawTime) {
 }
 
 function buildPromoKit(d) {
-  const toneLine = toneGuides[d.tone] || toneGuides.professional;
-  const contextLine = d.eventContext ? `\n\nEvent context: ${d.eventContext}` : '';
+  const voice = toneVoice[d.tone] || toneVoice.professional;
+  const contextPhrase = buildContextPhrase(d.eventContext);
+  const ctx = contextPhrase ? ` ${contextPhrase}` : '';
 
   return [
     {
       title: 'Email announcement',
-      text: `Subject: Join us for ${d.title}\n\nDear ${d.audience},\n\nYou are invited to ${d.title} on ${d.date} at ${d.time}. This event will take place at ${d.location}.\n\nWe will explore ${d.topic} with insights from ${d.speakers}. The message should feel ${toneLine}.${contextLine}\n\nPlease register here: ${d.registration}\n\nWe hope to see you there,\n[Your Nonprofit Name]`
+      text: `Subject: Join us for ${d.title}
+
+Dear ${d.audience},
+
+${voice.opener} on ${d.date} at ${d.time}, hosted at ${d.location}.
+
+We will explore ${d.topic} with insights from ${d.speakers}.${ctx}
+
+${voice.closer}
+
+Register here: ${d.registration}
+
+Warmly,
+[Your Nonprofit Name]`
     },
     {
       title: 'LinkedIn post',
-      text: `We're excited to invite ${d.audience} to ${d.title}.\n\n📅 ${d.date}\n⏰ ${d.time}\n📍 ${d.location}\n\nThis session focuses on ${d.topic}, featuring ${d.speakers}.${contextLine}\n\nRegister: ${d.registration}\n\n#NonprofitLeadership #CommunityImpact #ProfessionalDevelopment`
+      text: `${voice.opener} for ${d.audience}.
+
+${d.title}
+📅 ${d.date}
+⏰ ${d.time}
+📍 ${d.location}
+
+We will focus on ${d.topic} with perspectives from ${d.speakers}.${ctx}
+
+${voice.closer}
+
+Register: ${d.registration}
+
+#NonprofitLeadership #CommunityImpact #ProfessionalDevelopment`
     },
     {
       title: 'Facebook post',
-      text: `Big news, community! 🎉\n\n${d.title} is happening on ${d.date} at ${d.time}. Join us at ${d.location} for a meaningful conversation on ${d.topic}.\n\nFeaturing: ${d.speakers}${contextLine}\n\nSave your spot now: ${d.registration}\n\nTag someone in your network who should attend!`
+      text: `Big news, community! 🎉
+
+${voice.opener} as part of ${d.title} on ${d.date} at ${d.time}, happening at ${d.location}.
+
+We will dig into ${d.topic} with ${d.speakers}.${ctx}
+
+${voice.closer}
+
+Save your spot now: ${d.registration}
+
+Tag someone in your network who should attend!`
     },
     {
       title: 'Website blurb',
-      text: `${d.title} brings together ${d.audience} for a timely discussion on ${d.topic}. Join us on ${d.date} at ${d.time} at ${d.location}. Hear from ${d.speakers} and walk away with practical next steps for mission-driven impact.${contextLine ? ` ${d.eventContext}` : ''} Register today: ${d.registration}`
+      text: `${d.title} brings together ${d.audience} on ${d.date} at ${d.time} at ${d.location}. ${voice.opener}, with a timely focus on ${d.topic} and insights from ${d.speakers}.${ctx} ${voice.closer} Register today: ${d.registration}`
     },
     {
       title: 'Reminder email',
-      text: `Subject: Reminder: ${d.title} is coming up\n\nHello ${d.audience},\n\nA quick reminder that ${d.title} is happening on ${d.date} at ${d.time}.\n\nLocation/Access: ${d.location}\nFeatured speakers: ${d.speakers}${contextLine}\n\nIf you have not registered yet, you can still join us here: ${d.registration}\n\nLooking forward to connecting with you,\n[Your Nonprofit Name]`
+      text: `Subject: Reminder: ${d.title} is coming up
+
+Hello ${d.audience},
+
+This is a quick reminder that ${d.title} takes place on ${d.date} at ${d.time}.
+
+Location/Access: ${d.location}
+Featured speakers: ${d.speakers}
+
+${voice.opener} with a focus on ${d.topic}.${ctx}
+
+${voice.closer}
+
+If you have not registered yet, you can still join us here: ${d.registration}
+
+Looking forward to connecting with you,
+[Your Nonprofit Name]`
     },
     {
       title: 'Speaker introduction',
-      text: `Welcome everyone, and thank you for joining ${d.title}.\n\nToday, we are focusing on ${d.topic}. We are honored to be joined by ${d.speakers}, who bring valuable perspective for ${d.audience}.${contextLine}\n\nPlease join me in welcoming our speaker(s).`
+      text: `Welcome everyone, and thank you for joining ${d.title}.
+
+${voice.opener}. Today, we are focusing on ${d.topic}. We are honored to be joined by ${d.speakers}, who bring valuable perspective for ${d.audience}.${ctx}
+
+${voice.closer}`
     }
   ];
+}
+
+function buildContextPhrase(rawContext) {
+  if (!rawContext) {
+    return '';
+  }
+
+  const normalized = rawContext
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter((word) => word.length > 3)
+    .filter((word) => !['with', 'from', 'that', 'this', 'your', 'about', 'into', 'have', 'will', 'their', 'they', 'them', 'event', 'details'].includes(word));
+
+  const themes = [...new Set(normalized)].slice(0, 3);
+
+  if (!themes.length) {
+    return '';
+  }
+
+  if (themes.length === 1) {
+    return `Expect a thoughtful look at ${themes[0]}.`;
+  }
+
+  if (themes.length === 2) {
+    return `Expect a thoughtful look at ${themes[0]} and ${themes[1]}.`;
+  }
+
+  return `Expect a thoughtful look at ${themes[0]}, ${themes[1]}, and ${themes[2]}.`;
 }
 
 function renderSections(sections) {
